@@ -1,0 +1,207 @@
+
+        <html>
+        <head><title>APEX - Minecraft Store for apex Network - Best Plugins and Ranks</title></head>
+        <body style='background:#111; color:white; font-family:sans-serif; text-align:center; padding-top:50px;'>
+            <h1>Welcome to Minecraft Store for apex Network - Best Plugins and Ranks</h1>
+            <p>Built with APEX Engine.</p>
+            <p>Use 'A' button at the bottom right to start editing.</p>
+        
+    <div id="apex-no-edit-zone">
+        <div id="apex-toggle" onclick="toggleDashboard()" style="position:fixed; bottom:20px; right:20px; z-index:10000; background:#2ecc71; color:white; width:55px; height:55px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 0 20px rgba(0,0,0,0.6); font-weight:bold; font-size:22px;">A</div>
+
+        <div id="apex-gate" style="position:fixed; top:20px; left:20px; z-index:9999; background:#0a0a0a; border:1px solid #2ecc71; padding:20px; border-radius:15px; color:#fff; font-family:sans-serif; width:340px; display:none; box-shadow:0 25px 60px rgba(0,0,0,0.9);">
+            <div id="login-section">
+                <h3 style="color:#2ecc71; text-align:center; letter-spacing:2px;">APEX LOGIN</h3>
+                <input type="password" id="apex-pass" placeholder="Enter Dev Key" style="width:100%; padding:12px; background:#1a1a1a; border:1px solid #333; color:white; margin:15px 0; border-radius:8px;">
+                <button onclick="loginApex()" style="width:100%; padding:12px; background:#2ecc71; border:none; color:white; cursor:pointer; font-weight:bold; border-radius:8px;">UNLOCK SYSTEM</button>
+            </div>
+
+            <div id="apex-main-controls" style="display:none;">
+                <button onclick="toggleEditMode()" id="editBtn" style="width:100%; padding:12px; background:#3498db; color:white; border:none; border-radius:8px; cursor:pointer; font-weight:bold; margin-bottom:15px;">✏️ EDIT MODE: OFF</button>
+                
+                <div style="background:#151515; padding:12px; border-radius:10px; margin-bottom:15px; display:grid; grid-template-columns: 1fr 1fr; gap:8px;">
+                    <p style="font-size:11px; color:#888; grid-column: span 2; border-bottom:1px solid #333; padding-bottom:5px;">APEX TOOLS</p>
+                    <button onclick="addApexText()" style="padding:10px; background:#2c3e50; color:white; border:none; cursor:pointer; border-radius:5px;">+ Text</button>
+                    <button onclick="triggerUpload()" style="padding:10px; background:#2c3e50; color:white; border:none; cursor:pointer; border-radius:5px;">+ Image</button>
+                    <button onclick="addApexButton('link')" style="padding:10px; background:#27ae60; color:white; border:none; cursor:pointer; border-radius:5px;">+ Link Button</button>
+                    <button onclick="addApexButton('tab')" style="padding:10px; background:#f39c12; color:white; border:none; cursor:pointer; border-radius:5px;">+ Tab Button</button>
+                </div>
+
+                <div id="prop-editor" style="display:none; background:#1a1a1a; padding:15px; border-radius:10px; border-left:4px solid #2ecc71;">
+                    <p style="font-size:11px; color:#2ecc71; margin-bottom:10px; font-weight:bold;">ELEMENT PROPERTIES</p>
+                    
+                    <label style="font-size:10px; color:#888;">Content / Link</label>
+                    <input type="text" id="el-content" oninput="applyChanges()" style="width:100%; background:#000; color:white; border:1px solid #333; padding:8px; margin-bottom:10px; border-radius:5px;">
+                    
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px;">
+                        <div>
+                            <label style="font-size:10px; color:#888;">Size (px)</label>
+                            <input type="number" id="el-size" oninput="applyChanges()" style="width:100%; background:#000; color:white; border:1px solid #333; padding:8px; border-radius:5px;">
+                        </div>
+                        <div>
+                            <label style="font-size:10px; color:#888;">Weight</label>
+                            <select id="el-weight" onchange="applyChanges()" style="width:100%; background:#000; color:white; border:1px solid #333; padding:8px; border-radius:5px;">
+                                <option value="300">Light</option>
+                                <option value="400">Normal</option>
+                                <option value="700">Bold</option>
+                                <option value="900">Extra Bold</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label style="font-size:10px; color:#888;">Text Color</label>
+                            <input type="color" id="el-color" onchange="applyChanges()" style="width:100%; height:35px; border:none; background:none; cursor:pointer;">
+                        </div>
+                        <div id="bg-edit-area" style="display:none;">
+                            <label style="font-size:10px; color:#888;">Btn BG</label>
+                            <input type="color" id="el-bg" onchange="applyChanges()" style="width:100%; height:35px; border:none; background:none; cursor:pointer;">
+                        </div>
+                    </div>
+                    <button onclick="deleteActive()" style="width:100%; margin-top:15px; background:#e74c3c; color:white; border:none; padding:10px; cursor:pointer; font-size:12px; border-radius:5px; font-weight:bold;">🗑️ DELETE ELEMENT</button>
+                </div>
+            </div>
+        </div>
+        <input type="file" id="img-upload" style="display:none" onchange="handleImage(this)">
+        <div id="apex-tabs-container"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
+    <script>
+        const KEY = "P3TMNPLE14NW";
+        let isEditing = false;
+        let activeEl = null;
+
+        function toggleDashboard() {
+            let g = document.getElementById('apex-gate');
+            g.style.display = (g.style.display === 'none') ? 'block' : 'none';
+        }
+
+        function loginApex() {
+            if(document.getElementById('apex-pass').value === KEY) {
+                document.getElementById('login-section').style.display = 'none';
+                document.getElementById('apex-main-controls').style.display = 'block';
+            } else { alert('Access Denied: Invalid APEX Key'); }
+        }
+
+        function toggleEditMode() {
+            isEditing = !isEditing;
+            let btn = document.getElementById('editBtn');
+            btn.innerText = isEditing ? "✏️ EDIT MODE: ON" : "✏️ EDIT MODE: OFF";
+            btn.style.background = isEditing ? "#e67e22" : "#3498db";
+
+            document.querySelectorAll('h1, h2, h3, p, span, button, a, img').forEach(el => {
+                if(el.closest('#apex-no-edit-zone')) return;
+                if(isEditing) {
+                    el.style.outline = "2px dashed #2ecc71";
+                    el.style.cursor = "move";
+                    el.onclick = (e) => { e.stopPropagation(); e.preventDefault(); openEditor(el); };
+                    initInteract(el);
+                } else {
+                    el.style.outline = "none";
+                    el.style.cursor = "default";
+                    el.onclick = null;
+                    if(interact.isSet(el)) interact(el).unset();
+                    document.getElementById('prop-editor').style.display = 'none';
+                }
+            });
+        }
+
+        function initInteract(el) {
+            interact(el).draggable({
+                listeners: { move(e) {
+                    let x = (parseFloat(el.getAttribute('data-x')) || 0) + e.dx;
+                    let y = (parseFloat(el.getAttribute('data-y')) || 0) + e.dy;
+                    el.style.transform = `translate(${x}px, ${y}px)`;
+                    el.setAttribute('data-x', x);
+                    el.setAttribute('data-y', y);
+                    el.style.position = 'relative';
+                    el.style.zIndex = '1000';
+                }}
+            }).resizable({
+                edges: { left: true, right: true, bottom: true, top: true },
+                listeners: { move(e) {
+                    el.style.width = e.rect.width + 'px';
+                    el.style.height = e.rect.height + 'px';
+                }}
+            });
+        }
+
+        function openEditor(el) {
+            activeEl = el;
+            document.getElementById('prop-editor').style.display = 'block';
+            document.getElementById('el-content').value = (el.tagName === 'IMG') ? el.src : (el.getAttribute('data-link') || el.innerText);
+            document.getElementById('el-size').value = parseInt(window.getComputedStyle(el).fontSize);
+            document.getElementById('bg-edit-area').style.display = (el.tagName === 'BUTTON' || el.tagName === 'A') ? 'block' : 'none';
+        }
+
+        function applyChanges() {
+            if(!activeEl) return;
+            let val = document.getElementById('el-content').value;
+            
+            if(activeEl.tagName === 'IMG') {
+                activeEl.src = val;
+            } else if(activeEl.hasAttribute('data-link-btn')) {
+                activeEl.setAttribute('data-link', val); 
+            } else {
+                activeEl.innerText = val;
+            }
+            
+            activeEl.style.fontSize = document.getElementById('el-size').value + 'px';
+            activeEl.style.fontWeight = document.getElementById('el-weight').value;
+            activeEl.style.color = document.getElementById('el-color').value;
+            
+            if(activeEl.tagName === 'BUTTON' || activeEl.tagName === 'A') {
+                activeEl.style.backgroundColor = document.getElementById('el-bg').value;
+            }
+        }
+
+        function addApexText() {
+            let el = document.createElement('p');
+            el.innerText = "New Editable Text";
+            el.style.cssText = "padding:10px; color:white; font-size:18px; display:inline-block; font-family:sans-serif;";
+            document.body.appendChild(el);
+            if(isEditing) { toggleEditMode(); toggleEditMode(); }
+        }
+
+        function triggerUpload() { document.getElementById('img-upload').click(); }
+        function handleImage(input) {
+            if (input.files && input.files[0]) {
+                let reader = new FileReader();
+                reader.onload = (e) => {
+                    let img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.style.width = "200px";
+                    img.style.borderRadius = "10px";
+                    document.body.appendChild(img);
+                    if(isEditing) { toggleEditMode(); toggleEditMode(); }
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function addApexButton(type) {
+            let btn = document.createElement('button');
+            btn.innerText = type === 'link' ? "New Link" : "Open Interface";
+            btn.style.cssText = "padding:12px 28px; background:#2ecc71; color:white; border:none; border-radius:8px; cursor:pointer; font-weight:bold; margin:10px;";
+            
+            if(type === 'link') {
+                btn.setAttribute('data-link-btn', 'true');
+                btn.setAttribute('data-link', 'https://google.com');
+                btn.onclick = () => { if(!isEditing) window.open(btn.getAttribute('data-link'), '_blank'); };
+            } else {
+                let tabId = "tab-" + Math.random().toString(36).substr(2, 9);
+                let newTab = document.createElement('div');
+                newTab.id = tabId;
+                newTab.style.cssText = "display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#0d0d0d; z-index:9998; padding:50px; box-sizing:border-box;";
+                newTab.innerHTML = `<h1 style="color:white; font-family:sans-serif;">APEX NEW INTERFACE</h1><p style="color:#888;">Add your elements here...</p><button onclick="this.parentElement.style.display='none'" style="margin-top:20px; background:#e74c3c; color:white; border:none; padding:10px 20px; border-radius:5px; cursor:pointer;">CLOSE INTERFACE</button>`;
+                document.getElementById('apex-tabs-container').appendChild(newTab);
+                btn.onclick = () => { if(!isEditing) document.getElementById(tabId).style.display = 'block'; };
+            }
+            document.body.appendChild(btn);
+            if(isEditing) { toggleEditMode(); toggleEditMode(); }
+        }
+
+        function deleteActive() { if(activeEl) { activeEl.remove(); document.getElementById('prop-editor').style.display = 'none'; } }
+    </script>
+    </body>
+        </html>
+        
