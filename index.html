@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>APEX | apex site for dev</title>
+    <title>APEX | a perfect webstite for gamers with apex</title>
     <style>
         body { 
             background: #050505; 
@@ -29,7 +29,7 @@
 </head>
 <body>
     <div class="apex-container">
-        <h1>apex site for dev</h1>
+        <h1>a perfect webstite for gamers with apex</h1>
         <p>POWERED BY APEX ENGINE | DEV: AP1E2XX</p>
     </div>
 
@@ -44,6 +44,8 @@
             </div>
 
             <div id="apex-main-controls" style="display:none;">
+                <button onclick="toggleDashboard()" style="width:100%; padding:10px; background:#e74c3c; color:white; border:none; border-radius:8px; cursor:pointer; font-weight:bold; margin-bottom:10px; font-size:12px;">🚪 EXIT DEV MODE</button>
+                
                 <button onclick="toggleEditMode()" id="editBtn" style="width:100%; padding:12px; background:#3498db; color:white; border:none; border-radius:8px; cursor:pointer; font-weight:bold; margin-bottom:15px;">✏️ EDIT MODE: OFF</button>
                 
                 <div style="background:#151515; padding:12px; border-radius:10px; margin-bottom:15px; display:grid; grid-template-columns: 1fr 1fr; gap:8px;">
@@ -92,12 +94,14 @@
 
     <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
     <script>
-        const KEY = "6AG5TU96PKIR";
+        const KEY = "IX7DLK2LRNSI";
         let isEditing = false;
         let activeEl = null;
 
         function toggleDashboard() {
             let g = document.getElementById('apex-gate');
+            // إذا كان وضع التعديل شغال، نقفله أولاً قبل الخروج
+            if(isEditing) toggleEditMode(); 
             g.style.display = (g.style.display === 'none') ? 'block' : 'none';
         }
 
