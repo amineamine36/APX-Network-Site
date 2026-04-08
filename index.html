@@ -55,7 +55,6 @@
 
                 <div id="prop-editor" style="display:none; background:#1a1a1a; padding:15px; border-radius:10px; border-left:4px solid #2ecc71;">
                     <p style="font-size:11px; color:#2ecc71; margin-bottom:10px; font-weight:bold;">ELEMENT PROPERTIES</p>
-                    
                     <label style="font-size:10px; color:#888;">Content / Link</label>
                     <input type="text" id="el-content" oninput="applyChanges()" style="width:100%; background:#000; color:white; border:1px solid #333; padding:8px; margin-bottom:10px; border-radius:5px;">
                     
@@ -92,7 +91,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
     <script>
-        const KEY = "4G1W4R8U4QYH";
+        const KEY = "6HHI3EQJ45H4";
         let isEditing = false;
         let activeEl = null;
 
@@ -125,7 +124,7 @@
                     el.style.outline = "none";
                     el.style.cursor = "default";
                     el.onclick = null;
-                    if(interact.isSet(el)) interact(el).unset();
+                    if(typeof interact !== 'undefined' && interact.isSet(el)) interact(el).unset();
                     document.getElementById('prop-editor').style.display = 'none';
                 }
             });
